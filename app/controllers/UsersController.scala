@@ -11,7 +11,7 @@ import play.api.data.Forms._
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class HomeController @Inject()(usersDao: UsersDao, cc: ControllerComponents)(implicit ec: ExecutionContext) extends AbstractController(cc) {
+class UsersController @Inject()(usersDao: UsersDao, cc: ControllerComponents)(implicit ec: ExecutionContext) extends AbstractController(cc) {
 
   def index = Action.async { implicit request =>
     usersDao.all().map {
@@ -20,7 +20,7 @@ class HomeController @Inject()(usersDao: UsersDao, cc: ControllerComponents)(imp
   }
   def create = Action.async { implicit request =>
     val user: User = userForm.bindFromRequest.get
-    usersDao.insert(user).map(_ => Redirect(routes.HomeController.index))
+    usersDao.insert(user).map(_ => Redirect(routes.UsersController.index))
   }
 
   val userForm = Form(
