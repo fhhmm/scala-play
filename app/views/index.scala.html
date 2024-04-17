@@ -1,4 +1,6 @@
-@(users: Seq[User])
+@(users: Seq[User], form: Form[User])(implicit request: RequestHeader)
+@import play.twirl.api.Html
+@import views.html.helper.CSRF
 
 @main("User Database") {
 <div>
@@ -6,9 +8,10 @@
     <h2>Create User here:</h2>
 
     <form action="/users" method="POST">
-      <input id="id" type="text" placeholder="id" />
+      @CSRF.formField
+      <input name="id" type="number" placeholder="id" />
       <input name="name" type="text" placeholder="name" />
-      <input name="age" type="text" placeholder="age" />
+      <input name="age" type="number" placeholder="age" />
       <input type="submit" />
     </form>
 
