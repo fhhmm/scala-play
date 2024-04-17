@@ -5,7 +5,7 @@
 
 # An example controller showing a sample home page
 GET     /                           controllers.UsersController.index
-# GET     /hello                      controllers.HelloController.get(name: Option[String])
+GET     /hello                      controllers.HelloController.get(name: Option[String])
 GET     /users                      controllers.UsersController.index
 POST    /users                      controllers.UsersController.create
 
