@@ -1,5 +1,31 @@
-@()
+@(users: Seq[User])
 
-@main("Welcome to Play") {
-  <h1>Welcome to Play!</h1>
+@main("User Database") {
+<div>
+  <div id="users">
+    <h2>Create User here:</h2>
+
+    <form action="/users" method="POST">
+      <input id="id" type="text" placeholder="id" />
+      <input name="name" type="text" placeholder="name" />
+      <input name="age" type="text" placeholder="age" />
+      <input type="submit" />
+    </form>
+
+    <h2>Users list:</h2>
+    <table>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Age</th>
+      </tr>
+      @for(u <- users){ <tr>
+        <td>@u.id</td>
+        <td>@u.name</td>
+        <td>@u.age</td>
+        </tr>
+        }
+    </table>
+  </div>
+</div>
 }

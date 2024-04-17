@@ -3,22 +3,31 @@ package controllers
 import javax.inject._
 import play.api._
 import play.api.mvc._
+import play.api.db._
+import dao.UsersDao
+import models.User
+import play.api.data.Form
+import play.api.data.Forms._
+import scala.concurrent.ExecutionContext
 
-/**
- * This controller creates an `Action` to handle HTTP requests to the
- * application's home page.
- */
 @Singleton
-class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
+class UsersController @Inject()(usersDao: UsersDao, cc: ControllerComponents)(implicit ec: ExecutionContext) extends AbstractController(cc) {
 
-  /**
-   * Create an Action to render an HTML page.
-   *
-   * The configuration in the `routes` file means that this method
-   * will be called when the application receives a `GET` request with
-   * a path of `/`.
-   */
-  def index() = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.index())
+  def index = Action.async {
+    usersDao.all().map {
+        users => Ok(views.html.index(users))
+    }
   }
+  def create = Action.async { implicit request =>
+    val user: User = userForm.bindFromRequest.get
+    usersDao.insert(user).map(_ => Redirect(routes.UsersController.index))
+  }
+
+  val userForm = Form(
+    mapping(
+      "id" -> number,
+      "name" -> nonEmptyText,
+      "color" -> number
+    )(User.apply)(User.unapply)
+  )
 }
