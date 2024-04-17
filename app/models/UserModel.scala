@@ -1,7 +1,7 @@
 package models
 
 final case class User(
-    id: Int,
+    id: Option[Int],
     name: String,
     age: Int
 )

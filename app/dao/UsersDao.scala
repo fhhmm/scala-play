@@ -20,10 +20,10 @@ class UsersDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
 
   private class UsersTable(tag: Tag) extends Table[User](tag, "USERS") {
 
-    def id = column[Int]("ID", O.PrimaryKey)
+    def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
     def name = column[String]("NAME")
     def age = column[Int]("AGE")
 
-    def * = (id, name, age) <> (User.tupled, User.unapply _)
+    def * = (id.?, name, age) <> ((User.apply _).tupled, User.unapply)
   }
 }

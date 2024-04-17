@@ -26,9 +26,9 @@ class UsersController @Inject()(usersDao: UsersDao, cc: ControllerComponents)(im
 
   val userForm = Form(
     mapping(
-      "id" -> number,
       "name" -> nonEmptyText,
       "age" -> number
-    )(User.apply)(User.unapply)
+    )((name, age) => User(None, name, age))
+    (user => Some((user.name, user.age)))
   )
 }
