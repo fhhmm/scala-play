@@ -18,6 +18,7 @@ class UsersController @Inject()(usersDao: UsersDao, cc: ControllerComponents)(im
         users => Ok(views.html.users(users))
     }
   }
+
   def create = Action.async { implicit request =>
     val user: User = userForm.bindFromRequest.get
     usersDao.insert(user).map(_ => Redirect(routes.UsersController.index))
