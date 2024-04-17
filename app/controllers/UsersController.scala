@@ -15,7 +15,7 @@ class UsersController @Inject()(usersDao: UsersDao, cc: ControllerComponents)(im
 
   def index = Action.async { implicit request =>
     usersDao.all().map {
-        users => Ok(views.html.index(users))
+        users => Ok(views.html.users(users))
     }
   }
   def create = Action.async { implicit request =>
