@@ -11,7 +11,8 @@ trait Tables extends HasDatabaseConfigProvider[JdbcProfile] {
     def id = column[Int]("ID", O.PrimaryKey, O.AutoInc)
     def name = column[String]("NAME")
     def age = column[Int]("AGE")
-    def * = (id.?, name, age) <> ((User.apply _).tupled, User.unapply)
+    def companyId = column[Option[Int]]("COMPANY_ID")
+    def * = (id.?, name, age, companyId) <> ((User.apply _).tupled, User.unapply)
   }
 
   class CompaniesTable(tag: Tag) extends Table[Company](tag, "COMPANIES") {
