@@ -1,0 +1,33 @@
+@(companies: Seq[Company])(implicit request: RequestHeader)
+@import play.twirl.api.Html
+@import views.html.helper.CSRF
+
+@main("Companies") {
+<div>
+  <div id="companies">
+    <h2>Create Company here:</h2>
+
+    <form action="/companies" method="POST">
+      @CSRF.formField
+      <input name="name" type="text" placeholder="name" />
+      <input name="address" type="text" placeholder="address" />
+      <input type="submit" />
+    </form>
+
+    <h2>Companies list:</h2>
+    <table>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Address</th>
+      </tr>
+      @for(c <- companies){ <tr>
+        <td>@c.id</td>
+        <td>@c.name</td>
+        <td>@c.address</td>
+        </tr>
+        }
+    </table>
+  </div>
+</div>
+}
