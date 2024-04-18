@@ -14,8 +14,8 @@ import scala.concurrent.ExecutionContext
 class UsersController @Inject()(usersDao: UsersDao, cc: ControllerComponents)(implicit ec: ExecutionContext) extends AbstractController(cc) {
 
   def index = Action.async { implicit request =>
-    usersDao.all().map {
-        users => Ok(views.html.users(users))
+    usersDao.allWithCompany().map {
+        result => Ok(views.html.users(result.map(_._1)))
     }
   }
 
@@ -27,8 +27,9 @@ class UsersController @Inject()(usersDao: UsersDao, cc: ControllerComponents)(im
   val userForm = Form(
     mapping(
       "name" -> nonEmptyText,
-      "age" -> number
-    )((name, age) => User(None, name, age))
-    (user => Some((user.name, user.age)))
+      "age" -> number,
+      "companyId" -> optional(number)
+    )((name, age, companyId) => User(None, name, age, companyId))
+    (u => Some((u.name, u.age, u.companyId)))
   )
 }
