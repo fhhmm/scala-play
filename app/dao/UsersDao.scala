@@ -4,6 +4,7 @@ import scala.concurrent.Future
 
 import javax.inject.Inject
 import models.User
+import models.Company
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.db.slick.HasDatabaseConfigProvider
 import scala.concurrent.ExecutionContext
