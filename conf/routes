@@ -7,7 +7,7 @@
 GET     /                           controllers.UsersController.index
 GET     /hello                      controllers.HelloController.get(name: Option[String])
 GET     /users                      controllers.UsersController.index
-POST    /users                      controllers.UsersController.create
+# POST    /users                      controllers.UsersController.create
 GET     /companies                  controllers.CompaniesController.index
 POST    /companies                  controllers.CompaniesController.create
 
