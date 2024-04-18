@@ -1,4 +1,4 @@
-@(users: Seq[User])(implicit request: RequestHeader)
+@(data: Seq[(User, Option[Company])])(implicit request: RequestHeader)
 @import play.twirl.api.Html
 @import views.html.helper.CSRF
 
@@ -20,11 +20,13 @@
         <th>Id</th>
         <th>Name</th>
         <th>Age</th>
+        <th>Company</th>
       </tr>
-      @for(u <- users){ <tr>
-        <td>@u.id</td>
-        <td>@u.name</td>
-        <td>@u.age</td>
+      @for((user, company) <- data){ <tr>
+        <td>@user.id</td>
+        <td>@user.name</td>
+        <td>@user.age</td>
+        <td>@company.map(_.name)</td>
         </tr>
         }
     </table>
