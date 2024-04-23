@@ -9,6 +9,7 @@ import models.User
 import play.api.data.Form
 import play.api.data.Forms._
 import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
 @Singleton
 class UsersController @Inject()(usersDao: UsersDao, cc: ControllerComponents)(implicit ec: ExecutionContext) extends AbstractController(cc) {
@@ -20,8 +21,21 @@ class UsersController @Inject()(usersDao: UsersDao, cc: ControllerComponents)(im
   }
 
   def create = Action.async { implicit request =>
-    val user: User = userForm.bindFromRequest.get
-    usersDao.insert(user).map(_ => Redirect(routes.UsersController.index))
+    userForm.bindFromRequest.fold(
+      formWithErrors => {
+        // Handle form errors
+        Future.successful(BadRequest("Form input has errors"))
+      },
+      userData => {
+        UserValidation.validate(userData) match {
+          case Right(user) =>
+            usersDao.insert(user).map(_ => Redirect(routes.UsersController.index))
+          case Left(errors) =>
+            // Handle validation errors
+            Future.successful(BadRequest(errors.mkString(", ")))
+        }
+      }
+    )
   }
 
   val userForm = Form(
